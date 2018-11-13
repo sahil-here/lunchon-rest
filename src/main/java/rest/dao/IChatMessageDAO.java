@@ -12,5 +12,5 @@ public interface IChatMessageDAO {
     List<ChatMessage> idempotencyCheck(ChatMessageFetchRequest chatMessageFetchRequest) throws LOException;
 
     // list of messages before this timestamp (can be NULL)
-    List<ChatMessage> findMessageByEvent(Long eventId, Timestamp timestamp, int limit) throws LOException;
+    List<ChatMessage> findMessagesByEvent(Long eventId, Timestamp timestamp, int limit) throws LOException;
 }

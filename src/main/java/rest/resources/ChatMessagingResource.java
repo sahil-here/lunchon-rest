@@ -32,7 +32,7 @@ public class ChatMessagingResource {
     @Timed
     @Path("/chat")
     @UnitOfWork
-    @ApiOperation(value = "Get persisted messages for an event", response = GetChatMessagesResponse.class)
+    @ApiOperation(value = "Get persisted chat messages for an event", response = GetChatMessagesResponse.class)
     public Response getChatMessages(
             @ApiParam(required = true) @NotNull @QueryParam("eventId") Long eventId,
             @QueryParam("timeStamp") @DefaultValue("12/30/9999 23:59:59") Timestamp timestamp,

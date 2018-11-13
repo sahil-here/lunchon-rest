@@ -6,23 +6,13 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
 @Entity
-@Table(name = "ChatMessages", indexes = { @Index(columnList = "event_id", name = "event_id_index_on_message"),
-        @Index(columnList = "timestamp", name = "timestamp_index_on_message")})
+@Table(name = "ChatMessages", indexes = { @Index(columnList = "event_id, timestamp", name = "EVENT_ID_AND_TIMESTAMP")})
 
 @org.hibernate.annotations.NamedQueries({
-        @org.hibernate.annotations.NamedQuery(name = "idempotencyCheckForMessage", query = "FROM Message WHERE event_id = :event_id and sender_id = :sender_id and created_at=:created_at"),
+        @org.hibernate.annotations.NamedQuery(name = "idempotencyCheckForMessage", query = "FROM Message WHERE event_id = :event_id AND author_id = :author_id AND timestamp=:timestamp"),
         @org.hibernate.annotations.NamedQuery(name = "findMessageByEventId", query = "FROM Message WHERE event_id= :event_id AND timestamp< :timestamp LIMIT :limit")})
 
 public class ChatMessage  implements Serializable{
-
-    /*
-    chat message ->
-           timestamp
-           author_name
-           event_id
-           content_type
-           content
-     */
 
     @Column(name = "timestamp", nullable = false)
     private Timestamp timestamp;
@@ -47,5 +37,4 @@ public class ChatMessage  implements Serializable{
                 "'content_type : '" + Integer.toString(this.content_type) +
                 "'content' : " + this.content + "}";
     }
-
 }
