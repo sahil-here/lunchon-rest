@@ -15,7 +15,7 @@ import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
 import module.LunchOnModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rest.dao.entity.User;
+import rest.dao.entity.*;
 import exception.LOExceptionMapper;
 import rest.resources.LoginResource;
 import rest.resources.UserResource;
@@ -25,7 +25,8 @@ public class LunchOnApplication extends Application<LunchOnConfiguration> {
     protected static final Logger logger = LoggerFactory.getLogger(LunchOnApplication.class);
 
     private final HibernateBundle<LunchOnConfiguration> hibernateBundle = new HibernateBundle<LunchOnConfiguration>(
-            User.class) {
+            User.class, Event.class, Cuisine.class, CuisinePoll.class, EventStatus.class,Location.class,Message.class,
+            Restaurant.class, RestaurantPoll.class, Time.class, TimePoll.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(LunchOnConfiguration configuration) {
             return configuration.getDataSourceFactory();
@@ -50,7 +51,7 @@ public class LunchOnApplication extends Application<LunchOnConfiguration> {
 
     public static void main(String[] args) throws Exception {
         new LunchOnApplication().run(args);
-        logger.info("Vendi Service is up");
+        logger.info("LunchOn Service is up");
     }
 
     @Override

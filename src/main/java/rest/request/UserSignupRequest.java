@@ -15,7 +15,6 @@ public class UserSignupRequest {
     @JsonProperty("email")
     private String email;
 
-    @NotEmpty(message = "field is missing")
     @JsonProperty("contact")
     private String contact;
 

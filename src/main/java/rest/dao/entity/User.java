@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "User", indexes = { @Index(columnList = "id", name = "user_id_index_on_users"),
@@ -39,6 +40,11 @@ public class User implements Serializable{
 
     @Column(name = "updated_at")
     private Timestamp updatedAt;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name="Participant", joinColumns = @JoinColumn(name="user_id"),
+            inverseJoinColumns = @JoinColumn(name="event_id"))
+    private List<Event> events;
 
     public Long getId() {
         return id;
@@ -94,5 +100,13 @@ public class User implements Serializable{
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
     }
 }
