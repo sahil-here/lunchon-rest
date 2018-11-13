@@ -35,7 +35,7 @@ public class ChatMessagingResource {
     @ApiOperation(value = "Get persisted messages for an event", response = GetChatMessagesResponse.class)
     public Response getChatMessages(
             @ApiParam(required = true) @NotNull @QueryParam("eventId") Long eventId,
-            @QueryParam("timeStamp") @DefaultValue("") Timestamp timestamp,
+            @QueryParam("timeStamp") @DefaultValue("12/30/9999 23:59:59") Timestamp timestamp,
             @QueryParam("limit") @DefaultValue("100") int limit) throws LOException {
                 logger.info("Fetch messages eventId : " + eventId + ", timeStamp : " + timestamp.toString() + ", limit : " + limit);
                 GetChatMessagesResponse response = chatManager.getChatMessages(eventId, timestamp, limit);

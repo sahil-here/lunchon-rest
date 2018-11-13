@@ -18,16 +18,14 @@ public class ChatMessageDAO extends AbstractDAO<ChatMessage> implements IChatMes
         super(sessionFactory);
     }
 
-
     @Override
     public List<ChatMessage> idempotencyCheck(ChatMessageFetchRequest chatMessageFetchRequest) throws LOException {
         return null;
     }
 
     @Override
-    public List<ChatMessage> findMessageByEvent(Event event, Timestamp timestamp, int limit) throws LOException {
+    public List<ChatMessage> findMessageByEvent(Long eventId, Timestamp timestamp, int limit) throws LOException {
         return null;
     }
-
 
 }

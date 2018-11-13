@@ -1,9 +1,6 @@
 package rest.response;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import rest.dao.entity.ChatMessage;
-
 import java.util.List;
 
 public class GetChatMessagesResponse {
@@ -30,16 +27,19 @@ public class GetChatMessagesResponse {
 
     @Override
     public String toString(){
+        String messages = "";
+        for (ChatMessage msg: this.messages)
+            messages = messages.concat(msg.toString() + ",");
+        if (this.getNumMessages() > 0)  // delete the last ","
+            messages = messages.substring(0, messages.length()-1);
 
-        ObjectMapper mapper = new ObjectMapper();
-        String payload;
-        try {
-            payload = mapper.writeValueAsString(this);
-        }catch (JsonProcessingException je){
-            payload = "{error:" + je.toString() + "}";
-        }
-
-        return "GetChatMessagesResponse" + payload;
+        return  "GetChatMessagesResponse{" +
+                "numMessages : " + Integer.toString(this.getNumMessages()) + "," +
+                "messages : [" + messages + "]}";
     }
+
+
+
+
 
 }

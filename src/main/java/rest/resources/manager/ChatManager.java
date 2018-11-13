@@ -17,7 +17,6 @@ public class ChatManager implements IChatManager {
 
     @Override
     public GetChatMessagesResponse getChatMessages(Long eventId, Timestamp timestamp, int limit) throws LOException {
-        // List<ChatMessage> findMessageByEvent(Event event, Timestamp timestamp, int limit)
         List<ChatMessage> messages = chatMessageDAO.findMessageByEvent(eventId, timestamp, limit);
         if(messages!=null){
             GetChatMessagesResponse chatMessagesResponse = new GetChatMessagesResponse();
