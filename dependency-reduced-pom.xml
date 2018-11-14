@@ -171,8 +171,8 @@
   </dependencies>
   <properties>
     <dropwizard.version>0.8.1</dropwizard.version>
-    <dropwizard.guice.version>0.8.0</dropwizard.guice.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <dropwizard.guice.version>0.8.0</dropwizard.guice.version>
   </properties>
 </project>
 
