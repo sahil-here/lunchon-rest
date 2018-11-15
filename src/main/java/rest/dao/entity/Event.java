@@ -6,6 +6,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
@@ -96,6 +97,11 @@ public class Event implements Serializable {
             inverseJoinColumns = @JoinColumn(name="time_id"))
     private List<Time> timeChoices;
 
+    @Column(name = "created_at")
+    private Timestamp createdAt;
+
+    @Column(name = "updated_at")
+    private Timestamp updatedAt;
 
     public Long getId() {
         return id;
@@ -239,5 +245,21 @@ public class Event implements Serializable {
 
     public void setTimeChoices(List<Time> timeChoices) {
         this.timeChoices = timeChoices;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

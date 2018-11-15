@@ -1,6 +1,7 @@
 package rest.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import rest.dao.entity.Cuisine;
 import rest.request.*;
 
 import java.util.List;

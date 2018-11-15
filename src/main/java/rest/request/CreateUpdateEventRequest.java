@@ -3,12 +3,14 @@ package rest.request;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.NotEmpty;
+import rest.dao.entity.Cuisine;
 
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CreateEventRequest {
+public class CreateUpdateEventRequest {
 
     @NotEmpty(message = "field is missing")
     @JsonProperty("name")
@@ -41,10 +43,10 @@ public class CreateEventRequest {
     private String finalRestaurantId;
 
     @JsonProperty("final_cuisine_id")
-    private long finalCuisineId;
+    private Long finalCuisineId;
 
     @JsonProperty("final_time_id")
-    private long finalTimeId;
+    private Long finalTimeId;
 
     @JsonProperty("time_choices")
     private List<Time> timeChoices;
@@ -145,9 +147,10 @@ public class CreateEventRequest {
         this.timeChoices = timeChoices;
     }
 
+
     @Override
     public String toString() {
-        return "CreateEventRequest{" +
+        return "CreateUpdateEventRequest{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", budget='" + budget + '\'' +

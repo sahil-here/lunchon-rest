@@ -2,10 +2,10 @@ package rest.dao;
 
 import exception.LOException;
 import rest.dao.entity.Event;
-import rest.request.CreateEventRequest;
+import rest.request.CreateUpdateEventRequest;
 
 public interface IEventDAO {
-    Event idempotencyCheck(CreateEventRequest createEventRequest) throws LOException;
+    Event idempotencyCheck(CreateUpdateEventRequest createUpdateEventRequest) throws LOException;
 
     Event createOrUpdate(Event event) throws LOException;
 

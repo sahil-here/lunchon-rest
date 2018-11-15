@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rest.dao.*;
 import rest.dao.entity.*;
-import rest.request.CreateEventRequest;
+import rest.request.CreateUpdateEventRequest;
 import rest.response.CreateUpdateEventResponse;
 import rest.response.GetEventDetailsResponse;
 
@@ -41,117 +41,120 @@ public class EventManager implements IEventManager {
     @Inject
     protected IEventStatusDAO eventStatusDAO;
 
-
-
     @Override
-    public CreateUpdateEventResponse createEvent(CreateEventRequest createEventRequest) throws LOException {
-        Event event = new Event();
-        CreateUpdateEventResponse createUpdateEventResponse = new CreateUpdateEventResponse();
-        Event existing = eventDAO.idempotencyCheck(createEventRequest);
-        if(existing==null){
-
-            event.setBudget(createEventRequest.getBudget());
-            event.setDescription(createEventRequest.getDescription());
-            event.setName(createEventRequest.getName());
-            event.setOrganiser(userDAO.findUserById(createEventRequest.getOrganiserId()));
-
-
-            //Setting Participants
-            List<User> participants = new ArrayList<>();
-            for(Long id: createEventRequest.getParticipantIds()){
-                participants.add(userDAO.findUserById(id));
-            }
-            event.setParticipants(participants);
-
-            //Setting Location of the event
-            Location existingLocation = locationDAO.idempotencyCheck(createEventRequest.getLocation());
-            if(existingLocation==null){
-                Location location = new Location();
-                location.setLatitude(createEventRequest.getLocation().getLatitude());
-                location.setLongitude(createEventRequest.getLocation().getLongitude());
-                location.setRadius(createEventRequest.getLocation().getRadius());
-                location.setRadiusUnit(createEventRequest.getLocation().getRadiusUnit());
-                location.setCity(createEventRequest.getLocation().getCity());
-                location.setState(createEventRequest.getLocation().getState());
-                location.setCountry(createEventRequest.getLocation().getCountry());
-                location.setZipcode(createEventRequest.getLocation().getZipcode());
-                event.setLocation(locationDAO.createOrUpdate(location));
-            }else{
-                event.setLocation(existingLocation);
-            }
-
-
-            //Setting time choices
-            List<Time> timeChoices = new ArrayList<>();
-            for(rest.request.Time time: createEventRequest.getTimeChoices()){
-                Time existingTime = timeDAO.idempotencyCheck(time);
-                if(existingTime==null){
-                    Time time1 = new Time();
-                    time1.setCreatedAt(time.getCreatedAt());
-                    time1.setStartTime(time.getStartTime());
-                    time1.setEndTime(time.getEndTime());
-                    timeChoices.add(timeDAO.createOrUpdate(time1));
-                }else{
-                    timeChoices.add(existingTime);
-                }
-            }
-            event.setTimeChoices(timeChoices);
-
-            //Setting restaurant choices
-            List<Restaurant> restaurantChoices = new ArrayList<>();
-            for(rest.request.Restaurant restaurant: createEventRequest.getResturantChoices()){
-                Restaurant existingRestaurant = restaurantDAO.idempotencyCheck(restaurant);
-                if(existingRestaurant==null){
-                    Restaurant restaurant1 = new Restaurant();
-                    restaurant1.setId(restaurant.getId());
-                    restaurant1.setName(restaurant.getName());
-                    restaurant1.setAlias(restaurant.getAlias());
-                    restaurant1.setImageUrl(restaurant.getImageUrl());
-                    restaurant1.setUrl(restaurant.getUrl());
-                    restaurant1.setPhone(restaurant.getPhone());
-                    restaurant1.setPrice(restaurant.getPrice());
-                    restaurant1.setRating(restaurant.getRating());
-                    restaurant1.setAddress1(restaurant.getLocation().getAddress1());
-                    restaurant1.setAddress2(restaurant.getLocation().getAddress2());
-                    restaurant1.setAddress3(restaurant.getLocation().getAddress3());
-                    restaurant1.setCity(restaurant.getLocation().getCity());
-                    restaurant1.setState(restaurant.getLocation().getState());
-                    restaurant1.setCountry(restaurant.getLocation().getCountry());
-                    restaurant1.setLongitude(restaurant.getCoordinates().getLongitude());
-                    restaurant1.setLatitude(restaurant.getCoordinates().getLatitude());
-                    restaurant1.setZipcode(restaurant.getLocation().getZipcode());
-                    restaurantChoices.add(restaurantDAO.createOrUpdate(restaurant1));
-                }else{
-                    restaurantChoices.add(existingRestaurant);
-                }
-            }
-            event.setRestaurantChoices(restaurantChoices);
-
-            //Setting Cuisine choices
-            List<Cuisine> cuisineChoices = new ArrayList<>();
-            for(rest.request.Cuisine cuisine: createEventRequest.getCuisineChoices()){
-                cuisineChoices.add(cuisineDAO.findCuisineById(cuisine.getId()));
-            }
-            event.setCuisineChoices(cuisineChoices);
-
-            //Setting final chosen options
-            event.setFinalCuisine(cuisineDAO.findCuisineById(createEventRequest.getFinalCuisineId()));
-            event.setFinalRestaurant(restaurantDAO.findRestautantById(createEventRequest.getFinalRestaurantId()));
-            event.setFinalTime(timeDAO.findTimeById(createEventRequest.getFinalTimeId()));
-
-            Event createdEvent = eventDAO.createOrUpdate(event);
-            EventStatus eventStatus = new EventStatus();
-            eventStatus.setEvent(createdEvent);
-            eventStatus.setStatus(EventStatusName.CREATED);
-            eventStatus.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-            eventStatus.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-            eventStatusDAO.createOrUpdate(eventStatus);
-            createUpdateEventResponse.setId(createdEvent.getId());
-            createUpdateEventResponse.setName(createdEvent.getName());
-            return createUpdateEventResponse;
+    public CreateUpdateEventResponse createOrUpdateEvent(CreateUpdateEventRequest createUpdateEventRequest, Long eventId) throws LOException {
+        Event event = null;
+        if(eventId==null){
+            event = new Event();
+            event.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+            event.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         }else{
-            throw new LOException(400, LOErrorCode.EVENT_ALREADY_PRESENT.getName());
+            event = eventDAO.findEventById(eventId);
+            event.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         }
+        event.setBudget(createUpdateEventRequest.getBudget());
+        event.setDescription(createUpdateEventRequest.getDescription());
+        event.setName(createUpdateEventRequest.getName());
+        event.setOrganiser(userDAO.findUserById(createUpdateEventRequest.getOrganiserId()));
+
+        //Setting Participants
+        List<User> participants = new ArrayList<>();
+        for(Long id: createUpdateEventRequest.getParticipantIds()){
+            participants.add(userDAO.findUserById(id));
+        }
+        event.setParticipants(participants);
+
+        //Setting Location of the event
+        Location existingLocation = locationDAO.idempotencyCheck(createUpdateEventRequest.getLocation());
+        if(existingLocation==null){
+            Location location = new Location();
+            location.setLatitude(createUpdateEventRequest.getLocation().getLatitude());
+            location.setLongitude(createUpdateEventRequest.getLocation().getLongitude());
+            location.setRadius(createUpdateEventRequest.getLocation().getRadius());
+            location.setRadiusUnit(createUpdateEventRequest.getLocation().getRadiusUnit());
+            location.setCity(createUpdateEventRequest.getLocation().getCity());
+            location.setState(createUpdateEventRequest.getLocation().getState());
+            location.setCountry(createUpdateEventRequest.getLocation().getCountry());
+            location.setZipcode(createUpdateEventRequest.getLocation().getZipcode());
+            event.setLocation(locationDAO.createOrUpdate(location));
+        }else{
+            event.setLocation(existingLocation);
+        }
+
+        //Setting time choices
+        List<Time> timeChoices = new ArrayList<>();
+        for(rest.request.Time time: createUpdateEventRequest.getTimeChoices()){
+            Time existingTime = timeDAO.idempotencyCheck(time);
+            if(existingTime==null){
+                Time time1 = new Time();
+                time1.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+                time1.setStartTime(time.getStartTime());
+                time1.setEndTime(time.getEndTime());
+                timeChoices.add(timeDAO.createOrUpdate(time1));
+            }else{
+                timeChoices.add(existingTime);
+            }
+        }
+        event.setTimeChoices(timeChoices);
+
+        //Setting restaurant choices
+        List<Restaurant> restaurantChoices = new ArrayList<>();
+        for(rest.request.Restaurant restaurant: createUpdateEventRequest.getResturantChoices()){
+            Restaurant existingRestaurant = restaurantDAO.idempotencyCheck(restaurant);
+            if(existingRestaurant==null){
+                Restaurant restaurant1 = new Restaurant();
+                restaurant1.setId(restaurant.getId());
+                restaurant1.setName(restaurant.getName());
+                restaurant1.setAlias(restaurant.getAlias());
+                restaurant1.setImageUrl(restaurant.getImageUrl());
+                restaurant1.setUrl(restaurant.getUrl());
+                restaurant1.setPhone(restaurant.getPhone());
+                restaurant1.setPrice(restaurant.getPrice());
+                restaurant1.setRating(restaurant.getRating());
+                restaurant1.setAddress1(restaurant.getLocation().getAddress1());
+                restaurant1.setAddress2(restaurant.getLocation().getAddress2());
+                restaurant1.setAddress3(restaurant.getLocation().getAddress3());
+                restaurant1.setCity(restaurant.getLocation().getCity());
+                restaurant1.setState(restaurant.getLocation().getState());
+                restaurant1.setCountry(restaurant.getLocation().getCountry());
+                restaurant1.setLongitude(restaurant.getCoordinates().getLongitude());
+                restaurant1.setLatitude(restaurant.getCoordinates().getLatitude());
+                restaurant1.setZipcode(restaurant.getLocation().getZipcode());
+                restaurantChoices.add(restaurantDAO.createOrUpdate(restaurant1));
+            }else{
+                restaurantChoices.add(existingRestaurant);
+            }
+        }
+        event.setRestaurantChoices(restaurantChoices);
+
+        //Setting Cuisine choices
+        event.setCuisineChoices(createUpdateEventRequest.getCuisineChoices());
+
+        //Setting final chosen options
+        event.setFinalCuisine(cuisineDAO.findCuisineById(createUpdateEventRequest.getFinalCuisineId()));
+        event.setFinalRestaurant(restaurantDAO.findRestautantById(createUpdateEventRequest.getFinalRestaurantId()));
+        event.setFinalTime(timeDAO.findTimeById(createUpdateEventRequest.getFinalTimeId()));
+
+        Event createdOrUpdatedEvent = eventDAO.createOrUpdate(event);
+
+        //Update the status accordingly
+        EventStatus eventStatus = new EventStatus();
+        eventStatus.setEvent(createdOrUpdatedEvent);
+        if(eventId==null){
+            eventStatus.setStatus(EventStatusName.CREATED);
+        }else if(createdOrUpdatedEvent.getFinalTime()!=null && createdOrUpdatedEvent.getFinalRestaurant()!=null && createdOrUpdatedEvent.getFinalCuisine()!=null){
+            eventStatus.setStatus(EventStatusName.FINALIZED);
+        }else{
+            eventStatus.setStatus(EventStatusName.POLLING);
+        }
+        eventStatus.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        eventStatus.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+        eventStatusDAO.createOrUpdate(eventStatus);
+
+        CreateUpdateEventResponse createUpdateEventResponse = new CreateUpdateEventResponse();
+        createUpdateEventResponse.setId(createdOrUpdatedEvent.getId());
+        createUpdateEventResponse.setName(createdOrUpdatedEvent.getName());
+        return createUpdateEventResponse;
     }
 
     @Override
@@ -192,14 +195,7 @@ public class EventManager implements IEventManager {
         }
         response.setParticipantIds(participants);
 
-        List<rest.request.Cuisine> cuisines = new ArrayList<>();
-        for(Cuisine cuisine: event.getCuisineChoices()){
-            rest.request.Cuisine cu = new rest.request.Cuisine();
-            cu.setId(cuisine.getId());
-            cu.setName(cuisine.getName());
-            cuisines.add(cu);
-        }
-        response.setCuisineChoices(cuisines);
+        response.setCuisineChoices(event.getCuisineChoices());
 
         List<rest.request.CuisinePoll> cuisinePolls = new ArrayList<>();
         for(CuisinePoll cuisinePoll: event.getCuisinePolls()){
@@ -218,7 +214,6 @@ public class EventManager implements IEventManager {
             time1.setId(time.getId());
             time1.setStartTime(time.getStartTime());
             time1.setEndTime(time.getEndTime());
-            time1.setCreatedAt(time.getCreatedAt());
             times.add(time1);
         }
         response.setTimeChoices(times);
@@ -254,6 +249,11 @@ public class EventManager implements IEventManager {
         response.setRestaurantPolls(restaurantPolls);
 
         return response;
+    }
+
+    @Override
+    public List<Cuisine> getAllCuisines() throws LOException{
+        return cuisineDAO.findAllCuisine();
     }
 
 }

@@ -7,7 +7,7 @@ import io.dropwizard.hibernate.AbstractDAO;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import rest.dao.entity.Event;
-import rest.request.CreateEventRequest;
+import rest.request.CreateUpdateEventRequest;
 
 public class EventDAO extends AbstractDAO<Event> implements IEventDAO {
 
@@ -17,10 +17,10 @@ public class EventDAO extends AbstractDAO<Event> implements IEventDAO {
     }
 
     @Override
-    public Event idempotencyCheck(CreateEventRequest createEventRequest) throws LOException {
+    public Event idempotencyCheck(CreateUpdateEventRequest createUpdateEventRequest) throws LOException {
         try{
             Query query = namedQuery("idempotencyCheckForEventCreation");
-            query.setParameter("name", createEventRequest.getName());
+            query.setParameter("name", createUpdateEventRequest.getName());
             return (Event) query.uniqueResult();
         }catch(Exception ex){
             throw new LOException(500, LOErrorCode.INTERNAL_SERVER_ERROR.getName(),ex);

@@ -20,8 +20,6 @@ public class Time {
     @JsonProperty("end_time")
     private Timestamp endTime;
 
-    private Timestamp createdAt;
-
     public Long getId() {
         return id;
     }
@@ -44,14 +42,6 @@ public class Time {
 
     public void setEndTime(Timestamp endTime) {
         this.endTime = endTime;
-    }
-
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
     }
 
     @Override

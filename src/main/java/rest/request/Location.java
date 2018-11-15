@@ -44,8 +44,6 @@ public class Location {
     @JsonProperty("country")
     private String country;
 
-    private Timestamp createdAt;
-
     public Float getLatitude() {
         return latitude;
     }
@@ -132,14 +130,6 @@ public class Location {
 
     public void setAddress3(String address3) {
         this.address3 = address3;
-    }
-
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
     }
 
     public Long getId() {

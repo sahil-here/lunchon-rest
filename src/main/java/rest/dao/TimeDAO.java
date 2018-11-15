@@ -21,7 +21,6 @@ public class TimeDAO extends AbstractDAO<Time> implements ITimeDAO {
             Query query = namedQuery("idempotencyCheckForTime");
             query.setParameter("start_time", time.getStartTime());
             query.setParameter("end_time", time.getEndTime());
-            query.setParameter("created_at", time.getCreatedAt());
             return (Time) query.uniqueResult();
         }catch(Exception ex){
             throw new LOException(500, LOErrorCode.INTERNAL_SERVER_ERROR.getName(),ex);

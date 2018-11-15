@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 @Table(name = "Time")
 
 @org.hibernate.annotations.NamedQueries({
-        @org.hibernate.annotations.NamedQuery(name = "idempotencyCheckForTime", query = "FROM Time WHERE start_time = :start_time and end_time = :end_time and created_at=:created_at"),
+        @org.hibernate.annotations.NamedQuery(name = "idempotencyCheckForTime", query = "FROM Time WHERE start_time = :start_time and end_time = :end_time"),
         @org.hibernate.annotations.NamedQuery(name = "findTimeById", query = "FROM Time WHERE id= :id")})
 public class Time implements Serializable {
 

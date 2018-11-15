@@ -29,7 +29,6 @@ public class LocationDAO extends AbstractDAO<Location> implements ILocationDAO {
             query.setParameter("city",location.getCity());
             query.setParameter("state",location.getState());
             query.setParameter("country",location.getCountry());
-            query.setParameter("created_at",location.getCreatedAt());
             return (Location) query.uniqueResult();
         }catch(Exception ex){
             throw new LOException(500, LOErrorCode.INTERNAL_SERVER_ERROR.getName(),ex);

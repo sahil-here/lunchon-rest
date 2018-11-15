@@ -8,19 +8,19 @@ import exception.LOException;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rest.request.CreateEventRequest;
-import rest.request.Time;
+import rest.dao.entity.Cuisine;
+import rest.request.CreateUpdateEventRequest;
 import rest.resources.manager.IEventManager;
 import rest.response.CreateUpdateEventResponse;
 import rest.response.GetEventDetailsResponse;
 import util.BeanValidator;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.sql.Timestamp;
 
 @Path("lo")
 @Api(value = "event")
@@ -39,14 +39,10 @@ public class EventResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "Create New Event Request", response = CreateUpdateEventResponse.class)
     public Response createEvent(
-            @ApiParam(value = "Create New Event Request ", required = true) CreateEventRequest createEventRequest) throws LOException {
-        BeanValidator.validate(createEventRequest);
-        for(Time time:createEventRequest.getTimeChoices()){
-            time.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-        }
-        createEventRequest.getLocation().setCreatedAt(new Timestamp(System.currentTimeMillis()));
-        logger.info("Create Event Request: " + createEventRequest);
-        CreateUpdateEventResponse response = eventManager.createEvent(createEventRequest);
+            @ApiParam(value = "Create New Event Request ", required = true) CreateUpdateEventRequest createUpdateEventRequest) throws LOException {
+        BeanValidator.validate(createUpdateEventRequest);
+        logger.info("Create Event Request: " + createUpdateEventRequest);
+        CreateUpdateEventResponse response = eventManager.createOrUpdateEvent(createUpdateEventRequest,null);
         return Response.ok().entity(response).build();
     }
 
@@ -62,5 +58,32 @@ public class EventResource {
         return Response.ok().entity(response).build();
     }
 
+    @POST
+    @Timed
+    @Path("/event/{eventId}")
+    @UnitOfWork
+    @Consumes(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Update Event Request", response = CreateUpdateEventResponse.class)
+    public Response updateEvent(
+            @ApiParam(value = "Update Event Request ", required = true) CreateUpdateEventRequest createUpdateEventRequest, @NotNull @PathParam("eventId") Long eventId) throws LOException {
+        BeanValidator.validate(createUpdateEventRequest);
+        if(eventId==null){
+            throw new LOException(400, "eventId cannot be empty");
+        }
+        logger.info("Update Event Request: " + createUpdateEventRequest);
+        CreateUpdateEventResponse response = eventManager.createOrUpdateEvent(createUpdateEventRequest,eventId);
+        return Response.ok().entity(response).build();
+    }
+
+    @GET
+    @Timed
+    @Path("/getAllCuisines")
+    @UnitOfWork
+    @ApiOperation(value = "Get All Cuisines ", response = Cuisine.class, responseContainer="List")
+    public Response getUserDetails() throws LOException{
+        logger.info("Get all cuisines.");
+        List<Cuisine> response = eventManager.getAllCuisines();
+        return Response.ok().entity(response).build();
+    }
 
 }
