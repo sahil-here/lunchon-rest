@@ -8,12 +8,8 @@ import io.dropwizard.hibernate.HibernateBundle;
 import org.apache.http.client.HttpClient;
 import org.hibernate.SessionFactory;
 import rest.LunchOnConfiguration;
-import rest.dao.IUserDAO;
-import rest.dao.UserDAO;
-import rest.resources.manager.ILoginManager;
-import rest.resources.manager.IUserManager;
-import rest.resources.manager.LoginManager;
-import rest.resources.manager.UserManager;
+import rest.dao.*;
+import rest.resources.manager.*;
 import rotation.RotationHelper;
 
 public class LunchOnModule extends AbstractModule {
@@ -31,9 +27,17 @@ public class LunchOnModule extends AbstractModule {
     protected void configure() {
         bind(ObjectMapper.class).toInstance(objectMapper);
         bind(RotationHelper.class).toInstance(new RotationHelper());
+        bind(ICuisineDAO.class).to(CuisineDAO.class);
+        bind(IEventDAO.class).to(EventDAO.class);
+        bind(IEventStatusDAO.class).to(EventStatusDAO.class);
+        bind(ILocationDAO.class).to(LocationDAO.class);
+        bind(IRestaurantDAO.class).to(RestaurantDAO.class);
+        bind(ITimeDAO.class).to(TimeDAO.class);
         bind(IUserDAO.class).to(UserDAO.class);
+        bind(IEventManager.class).to(EventManager.class);
         bind(ILoginManager.class).to(LoginManager.class);
         bind(IUserManager.class).to(UserManager.class);
+        bind(IEventManager.class).to(EventManager.class);
     }
 
     @Provides

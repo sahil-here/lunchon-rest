@@ -8,6 +8,7 @@ public enum LOErrorCode {
     USER_NOT_FOUND("User not found"),
     USER_ALREADY_PRESENT("This user is already present"),
     EVENT_NOT_FOUND("Event not found"),
+    EVENT_ALREADY_PRESENT("This event is already present"),
     DUPLICATE_REQUEST("Duplicate Request");
 
     private final String name;

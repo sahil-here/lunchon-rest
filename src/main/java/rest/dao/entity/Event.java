@@ -35,7 +35,7 @@ public class Event implements Serializable {
     @JoinColumn(name="organiser_id")
     private User organiser;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name="Participant", joinColumns = @JoinColumn(name="event_id"),
             inverseJoinColumns = @JoinColumn(name="user_id"))
     private List<User> participants;
@@ -80,6 +80,21 @@ public class Event implements Serializable {
     @OneToOne
     @JoinColumn(name="final_restaurant_id")
     private Restaurant finalRestaurant;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name="CuisineChoice", joinColumns = @JoinColumn(name="event_id"),
+            inverseJoinColumns = @JoinColumn(name="cuisine_id"))
+    private List<Cuisine> cuisineChoices;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name="RestaurantChoice", joinColumns = @JoinColumn(name="event_id"),
+            inverseJoinColumns = @JoinColumn(name="restaurant_id"))
+    private List<Restaurant> restaurantChoices;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name="TimeChoice", joinColumns = @JoinColumn(name="event_id"),
+            inverseJoinColumns = @JoinColumn(name="time_id"))
+    private List<Time> timeChoices;
 
 
     public Long getId() {
@@ -200,5 +215,29 @@ public class Event implements Serializable {
 
     public void setFinalRestaurant(Restaurant finalRestaurant) {
         this.finalRestaurant = finalRestaurant;
+    }
+
+    public List<Cuisine> getCuisineChoices() {
+        return cuisineChoices;
+    }
+
+    public void setCuisineChoices(List<Cuisine> cuisineChoices) {
+        this.cuisineChoices = cuisineChoices;
+    }
+
+    public List<Restaurant> getRestaurantChoices() {
+        return restaurantChoices;
+    }
+
+    public void setRestaurantChoices(List<Restaurant> restaurantChoices) {
+        this.restaurantChoices = restaurantChoices;
+    }
+
+    public List<Time> getTimeChoices() {
+        return timeChoices;
+    }
+
+    public void setTimeChoices(List<Time> timeChoices) {
+        this.timeChoices = timeChoices;
     }
 }

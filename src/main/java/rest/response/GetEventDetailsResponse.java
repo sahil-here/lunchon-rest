@@ -1,27 +1,24 @@
-package rest.request;
+package rest.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.validator.constraints.NotEmpty;
+import rest.request.*;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown=true)
-public class CreateEventRequest {
+public class GetEventDetailsResponse {
 
-    @NotEmpty(message = "field is missing")
+    @JsonProperty("id")
+    private Long id;
+
     @JsonProperty("name")
     private String name;
 
     @JsonProperty("description")
     private String description;
 
-    @NotEmpty(message = "field is missing")
     @JsonProperty("budget")
     private String budget;
 
-    @NotNull(message = "field is missing")
     @JsonProperty("organiser_id")
     private Long organiserId;
 
@@ -30,6 +27,9 @@ public class CreateEventRequest {
 
     @JsonProperty("location")
     private Location location;
+
+    @JsonProperty("time_choices")
+    private List<Time> timeChoices;
 
     @JsonProperty("resturant_choices")
     private List<Restaurant> resturantChoices;
@@ -41,13 +41,27 @@ public class CreateEventRequest {
     private String finalRestaurantId;
 
     @JsonProperty("final_cuisine_id")
-    private long finalCuisineId;
+    private Long finalCuisineId;
 
     @JsonProperty("final_time_id")
-    private long finalTimeId;
+    private Long finalTimeId;
 
-    @JsonProperty("time_choices")
-    private List<Time> timeChoices;
+    @JsonProperty("cuisine_polls")
+    private List<CuisinePoll> cuisinePolls;
+
+    @JsonProperty("restaurant_polls")
+    private List<RestaurantPoll> restaurantPolls;
+
+    @JsonProperty("time_polls")
+    private List<TimePoll> timePolls;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -97,6 +111,14 @@ public class CreateEventRequest {
         this.location = location;
     }
 
+    public List<Time> getTimeChoices() {
+        return timeChoices;
+    }
+
+    public void setTimeChoices(List<Time> timeChoices) {
+        this.timeChoices = timeChoices;
+    }
+
     public List<Restaurant> getResturantChoices() {
         return resturantChoices;
     }
@@ -137,29 +159,27 @@ public class CreateEventRequest {
         this.finalTimeId = finalTimeId;
     }
 
-    public List<Time> getTimeChoices() {
-        return timeChoices;
+    public List<CuisinePoll> getCuisinePolls() {
+        return cuisinePolls;
     }
 
-    public void setTimeChoices(List<Time> timeChoices) {
-        this.timeChoices = timeChoices;
+    public void setCuisinePolls(List<CuisinePoll> cuisinePolls) {
+        this.cuisinePolls = cuisinePolls;
     }
 
-    @Override
-    public String toString() {
-        return "CreateEventRequest{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", budget='" + budget + '\'' +
-                ", organiserId=" + organiserId +
-                ", participantIds=" + participantIds +
-                ", location=" + location +
-                ", resturantChoices=" + resturantChoices +
-                ", cuisineChoices=" + cuisineChoices +
-                ", finalRestaurantId='" + finalRestaurantId + '\'' +
-                ", finalCuisineId=" + finalCuisineId +
-                ", finalTimeId=" + finalTimeId +
-                ", timeChoices=" + timeChoices +
-                '}';
+    public List<RestaurantPoll> getRestaurantPolls() {
+        return restaurantPolls;
+    }
+
+    public void setRestaurantPolls(List<RestaurantPoll> restaurantPolls) {
+        this.restaurantPolls = restaurantPolls;
+    }
+
+    public List<TimePoll> getTimePolls() {
+        return timePolls;
+    }
+
+    public void setTimePolls(List<TimePoll> timePolls) {
+        this.timePolls = timePolls;
     }
 }

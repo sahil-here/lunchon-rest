@@ -7,8 +7,9 @@ import java.io.Serializable;
 @Table(name = "Cuisine")
 
 @org.hibernate.annotations.NamedQueries({
-        @org.hibernate.annotations.NamedQuery(name = "idempotencyCheckForCuisine", query = "FROM Cuisine WHERE name = :name"),
-        @org.hibernate.annotations.NamedQuery(name = "findCuisineById", query = "FROM Cuisine WHERE id= :id")})
+        @org.hibernate.annotations.NamedQuery(name = "findCuisineByName", query = "FROM Cuisine WHERE name = :name"),
+        @org.hibernate.annotations.NamedQuery(name = "findCuisineById", query = "FROM Cuisine WHERE id= :id"),
+        @org.hibernate.annotations.NamedQuery(name = "findAllCuisine", query = "FROM Cuisine")})
 public class Cuisine implements Serializable {
 
     @Id

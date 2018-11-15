@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rest.dao.entity.*;
 import exception.LOExceptionMapper;
+import rest.resources.EventResource;
 import rest.resources.LoginResource;
 import rest.resources.UserResource;
 
@@ -78,6 +79,7 @@ public class LunchOnApplication extends Application<LunchOnConfiguration> {
         environment.healthChecks().register("rotation-health", healthCheck);
         environment.jersey().register(guiceBundle.getInjector().getInstance(LoginResource.class));
         environment.jersey().register(guiceBundle.getInjector().getInstance(UserResource.class));
+        environment.jersey().register(guiceBundle.getInjector().getInstance(EventResource.class));
         environment.jersey().register(guiceBundle.getInjector().getInstance(LOExceptionMapper.class));
     }
 }

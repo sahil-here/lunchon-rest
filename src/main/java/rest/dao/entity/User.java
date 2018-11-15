@@ -41,9 +41,7 @@ public class User implements Serializable{
     @Column(name = "updated_at")
     private Timestamp updatedAt;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name="Participant", joinColumns = @JoinColumn(name="user_id"),
-            inverseJoinColumns = @JoinColumn(name="event_id"))
+    @ManyToMany(mappedBy = "participants")
     private List<Event> events;
 
     public Long getId() {
