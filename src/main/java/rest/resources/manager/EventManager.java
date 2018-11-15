@@ -87,9 +87,9 @@ public class EventManager implements IEventManager {
                 Time existingTime = timeDAO.idempotencyCheck(time);
                 if(existingTime==null){
                     Time time1 = new Time();
-                    time.setCreatedAt(time.getCreatedAt());
-                    time.setStartTime(time.getStartTime());
-                    time.setEndTime(time.getEndTime());
+                    time1.setCreatedAt(time.getCreatedAt());
+                    time1.setStartTime(time.getStartTime());
+                    time1.setEndTime(time.getEndTime());
                     timeChoices.add(timeDAO.createOrUpdate(time1));
                 }else{
                     timeChoices.add(existingTime);
