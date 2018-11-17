@@ -77,7 +77,7 @@
               <transformers>
                 <transformer />
                 <transformer>
-                  <mainClass>vendi.rest.VendiApplication</mainClass>
+                  <mainClass>rest.LunchOnApplication</mainClass>
                 </transformer>
               </transformers>
             </configuration>

@@ -243,7 +243,7 @@
                                         implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>vendi.rest.VendiApplication</mainClass>
+                                    <mainClass>rest.LunchOnApplication</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
