@@ -2,10 +2,10 @@ server:
   rootPath: /*
   applicationConnectors:
     - type: http
-      port: 28700
+      port: 3700
   adminConnectors:
     - type: http
-      port: 29700
+      port: 4700
   gzip:
     bufferSize: 8KiB
   registerDefaultExceptionMappers: false

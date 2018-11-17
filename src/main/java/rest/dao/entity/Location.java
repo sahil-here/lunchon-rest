@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 @org.hibernate.annotations.NamedQueries({
         @org.hibernate.annotations.NamedQuery(name = "idempotencyCheckForLocation", query = "FROM Location WHERE latitude = :latitude " +
                 " and longitude = :longitude and radius=:radius and radius_unit= :radius_unit and zipcode= :zipcode and city= :city" +
-                " and state = :state and country= :country and created_at= :created_at"),
+                " and state = :state and country= :country"),
         @org.hibernate.annotations.NamedQuery(name = "findLocationById", query = "FROM Location WHERE id= :id")})
 public class Location implements Serializable {
 
