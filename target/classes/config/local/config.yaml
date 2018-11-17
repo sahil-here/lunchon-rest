@@ -1,0 +1,98 @@
+server:
+  rootPath: /*
+  applicationConnectors:
+    - type: http
+      port: 28700
+  adminConnectors:
+    - type: http
+      port: 29700
+  gzip:
+    bufferSize: 8KiB
+  registerDefaultExceptionMappers: false
+  requestLog:
+    appenders:
+      # Settings for logging to a file.
+      - type: file
+        timeZone: PT
+        logFormat: "%highlight(%-5level) [%d] [%t] [%X{X-Transaction-Id}] [%X{X-Request-Id}] %c - %m%n"
+        # The file to which statements will be logged.
+        currentLogFilename: /var/log/lunchon/requests.log
+        #  When the log file rolls over, the file will be archived to example-2012-03-15.log.gz,
+        # example.log will be truncated, and new statements written to it.
+        archivedLogFilenamePattern: /var/log/lunchon/requests-%d.log.gz
+        # The maximum number of log files to archive.
+        archivedFileCount: 5
+
+# Logging settings.
+logging:
+  # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
+  level: INFO
+
+  # Logger-specific levels.
+  loggers:
+    vendi: DEBUG
+    org.hibernate.SQL: OFF
+    org.hibernate.engine: OFF
+
+  appenders:
+    - type: console
+    - type: file
+      threshold: TRACE
+      timeZone: PT
+      logFormat: "%highlight(%-5level) [%d] [%t] [%X{X-Transaction-Id}] [%X{X-Request-Id}] %c - %m%n"
+      currentLogFilename:  /var/log/lunchon/default.log
+      archivedLogFilenamePattern: /var/log/lunchon/default-%d{yyyy-MM-dd}.log.gz
+      archivedFileCount: 60
+
+database:
+  # the name of your JDBC driver
+  driverClass: com.mysql.jdbc.Driver
+
+  # the username
+  user: root
+
+  # the password
+  password:
+
+  # the JDBC URL
+  url: jdbc:mysql://localhost:3306/lunchon?autoReconnect=true&relaxAutoCommit=true
+
+  # any properties specific to your JDBC driver:
+  properties:
+    charSet: UTF-8
+    hibernate.dialect: org.hibernate.dialect.MySQLDialect
+    hibernate.c3p0.min_size: 8
+    hibernate.c3p0.max_size: 32
+    hibernate.c3p0.timeout: 1800
+    hibernate.jdbc.batch_size: 10
+    hibernate.show_sql: true
+    hibernate.hbm2ddl.auto: update
+
+  # the maximum amount of time to wait on an empty pool before throwing an exception
+  maxWaitForConnection: 1s
+
+  # the SQL query to run when validating a connection's liveness
+  validationQuery: "/* MyService Health Check */ SELECT 1"
+#
+#  # the minimum number of connections to keep open
+#  minSize: 8
+#
+#  # the maximum number of connections to keep open
+#  maxSize: 32
+
+  # whether or not idle connections should be validated
+  checkConnectionWhileIdle: false
+  checkConnectionOnBorrow: true
+
+httpClient:
+  timeout: 50000ms
+  connectionTimeout: 50000ms
+  timeToLive: 1h
+  cookiesEnabled: false
+  maxConnections: 1024
+  maxConnectionsPerRoute: 1024
+  keepAlive: 0ms
+  retries: 0
+
+swagger:
+  resourcePackage: rest.resources
