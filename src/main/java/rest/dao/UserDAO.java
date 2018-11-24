@@ -9,6 +9,8 @@ import exception.LOErrorCode;
 import exception.LOException;
 import rest.request.UserSignupRequest;
 
+import java.util.List;
+
 public class UserDAO extends AbstractDAO<User> implements IUserDAO {
 
     @Inject
@@ -53,6 +55,17 @@ public class UserDAO extends AbstractDAO<User> implements IUserDAO {
             Query query = namedQuery("findUserByEmail");
             query.setParameter("email", email);
             return (User) query.uniqueResult();
+        }catch(Exception ex){
+            throw new LOException(500, LOErrorCode.INTERNAL_SERVER_ERROR.getName(),ex);
+        }
+    }
+
+    @Override
+    public List<User> findUsersByPattern(String pattern) throws LOException {
+        try{
+            Query query = namedQuery("findUsersByPattern");
+            query.setParameter("pattern", pattern+"%");
+            return (List<User>) query.list();
         }catch(Exception ex){
             throw new LOException(500, LOErrorCode.INTERNAL_SERVER_ERROR.getName(),ex);
         }

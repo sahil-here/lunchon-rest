@@ -14,6 +14,7 @@ import java.util.List;
 @org.hibernate.annotations.NamedQueries({
         @org.hibernate.annotations.NamedQuery(name = "idempotencyCheckForUserCreation", query = "FROM User WHERE email = :email"),
         @org.hibernate.annotations.NamedQuery(name = "findUserById", query = "FROM User WHERE id= :id"),
+        @org.hibernate.annotations.NamedQuery(name = "findUsersByPattern", query = "FROM User WHERE email like :pattern"),
         @org.hibernate.annotations.NamedQuery(name = "findUserByEmail", query = "FROM User WHERE email= :email")})
 public class User implements Serializable{
 

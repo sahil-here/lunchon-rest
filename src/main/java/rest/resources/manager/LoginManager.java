@@ -52,20 +52,24 @@ public class LoginManager implements ILoginManager {
     public GetUserDetailsResponse userLogin(UserLoginRequest userLoginRequest) throws LOException{
         try{
             User existing = userDAO.findUserByEmail(userLoginRequest.getEmail());
-            String passwordHash = existing.getPassword();
-            if(!StringUtils.isEmpty(passwordHash)){
-                if(PasswordHash.validatePassword(userLoginRequest.getPassword(), passwordHash)){
-                    GetUserDetailsResponse userDetailsResponse = new GetUserDetailsResponse();
-                    userDetailsResponse.setId(existing.getId());
-                    userDetailsResponse.setName(existing.getName());
-                    userDetailsResponse.setEmail(existing.getEmail());
-                    userDetailsResponse.setContact(existing.getContact());
-                    return userDetailsResponse;
+            if(existing!=null){
+                String passwordHash = existing.getPassword();
+                if(!StringUtils.isEmpty(passwordHash)){
+                    if(PasswordHash.validatePassword(userLoginRequest.getPassword(), passwordHash)){
+                        GetUserDetailsResponse userDetailsResponse = new GetUserDetailsResponse();
+                        userDetailsResponse.setId(existing.getId());
+                        userDetailsResponse.setName(existing.getName());
+                        userDetailsResponse.setEmail(existing.getEmail());
+                        userDetailsResponse.setContact(existing.getContact());
+                        return userDetailsResponse;
+                    }else{
+                        throw new LOException(400, LOErrorCode.INVALID_USER_CREDENTIALS.getName());
+                    }
                 }else{
-                    throw new LOException(400, LOErrorCode.INVALID_USER_CREDENTIALS.getName());
+                    throw new LOException(500, LOErrorCode.PASSWORD_ERROR.getName());
                 }
             }else{
-                throw new LOException(500, LOErrorCode.PASSWORD_ERROR.getName());
+                throw new LOException(400, LOErrorCode.INVALID_USER_CREDENTIALS.getName());
             }
         }catch(NoSuchAlgorithmException | InvalidKeySpecException ex){
             throw new LOException(500, LOErrorCode.INTERNAL_SERVER_ERROR.getName(),ex);

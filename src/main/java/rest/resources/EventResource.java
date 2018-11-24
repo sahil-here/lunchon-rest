@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rest.dao.entity.Cuisine;
 import rest.request.CreateUpdateEventRequest;
+import rest.request.VoteRequest;
 import rest.resources.manager.IEventManager;
 import rest.response.CreateUpdateEventResponse;
 import rest.response.GetEventDetailsResponse;
@@ -22,7 +23,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("lo")
+@Path("api/lunchon")
 @Api(value = "event")
 @Produces(MediaType.APPLICATION_JSON)
 public class EventResource {
@@ -85,5 +86,20 @@ public class EventResource {
         List<Cuisine> response = eventManager.getAllCuisines();
         return Response.ok().entity(response).build();
     }
+
+    @POST
+    @Timed
+    @Path("/event/vote")
+    @UnitOfWork
+    @Consumes(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Vote Request", response = VoteRequest.class)
+    public Response vote(
+            @ApiParam(value = "Update Event Request ", required = true) VoteRequest voteRequest) throws LOException {
+        BeanValidator.validate(voteRequest);
+        logger.info("Vote Request: " + voteRequest);
+        CreateUpdateEventResponse response = eventManager.createOrUpdateEvent(createUpdateEventRequest,eventId);
+        return Response.ok().entity(response).build();
+    }
+
 
 }

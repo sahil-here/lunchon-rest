@@ -56,6 +56,9 @@ public class GetEventDetailsResponse {
     @JsonProperty("time_polls")
     private List<TimePoll> timePolls;
 
+    @JsonProperty("statuses")
+    private List<EventStatus> statuses;
+
     public Long getId() {
         return id;
     }
@@ -182,5 +185,13 @@ public class GetEventDetailsResponse {
 
     public void setTimePolls(List<TimePoll> timePolls) {
         this.timePolls = timePolls;
+    }
+
+    public List<EventStatus> getStatuses() {
+        return statuses;
+    }
+
+    public void setStatuses(List<EventStatus> statuses) {
+        this.statuses = statuses;
     }
 }

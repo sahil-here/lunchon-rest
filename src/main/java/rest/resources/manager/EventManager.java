@@ -163,6 +163,16 @@ public class EventManager implements IEventManager {
         if(event==null){
             throw new LOException(400,LOErrorCode.EVENT_NOT_FOUND.getName());
         }
+        return populateEventDetails(event);
+    }
+
+    @Override
+    public List<Cuisine> getAllCuisines() throws LOException{
+        return cuisineDAO.findAllCuisine();
+    }
+
+    @Override
+    public GetEventDetailsResponse populateEventDetails(Event event){
         GetEventDetailsResponse response = new GetEventDetailsResponse();
         response.setId(event.getId());
         response.setName(event.getName());
@@ -248,12 +258,17 @@ public class EventManager implements IEventManager {
         }
         response.setRestaurantPolls(restaurantPolls);
 
-        return response;
-    }
+        List<rest.response.EventStatus> eventStatuses = new ArrayList<>();
+        for(EventStatus status: event.getStatuses()){
+            rest.response.EventStatus eventStatus = new rest.response.EventStatus();
+            eventStatus.setId(status.getId());
+            eventStatus.setStatus(status.getStatus().name());
+            eventStatus.setCreatedAt(status.getCreatedAt());
+            eventStatuses.add(eventStatus);
+        }
+        response.setStatuses(eventStatuses);
 
-    @Override
-    public List<Cuisine> getAllCuisines() throws LOException{
-        return cuisineDAO.findAllCuisine();
+        return response;
     }
 
 }

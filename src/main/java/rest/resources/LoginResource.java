@@ -20,7 +20,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("lo")
+@Path("api/lunchon")
 @Api(value = "login")
 @Produces(MediaType.APPLICATION_JSON)
 public class LoginResource {
