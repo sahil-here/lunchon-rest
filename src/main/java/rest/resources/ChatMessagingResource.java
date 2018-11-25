@@ -8,7 +8,6 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
 import exception.LOException;
 import io.dropwizard.hibernate.UnitOfWork;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rest.resources.manager.IChatManager;
@@ -17,9 +16,7 @@ import rest.response.GetChatMessagesResponse;
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import java.sql.Timestamp;
 
@@ -46,11 +43,7 @@ public class ChatMessagingResource {
             @ApiParam(required = true) @NotNull @QueryParam("user_id") Long userId,
             @QueryParam("last_seen") @DefaultValue("253399043869000") Long lastSeen,
             @QueryParam("limit") @DefaultValue("100") int limit) throws LOException {
-
-                if(!this.basicauth.match(token, userId)){
-                    throw new LOException(403, "Token invalid");
-                }
-
+                basicauth.validateToken(token, userId);
                 Timestamp timestamp = new Timestamp(lastSeen);  // milli-second epoch
                 logger.info("Fetch messages eventId : " + eventId + ", timeStamp : " + timestamp.toString() + ", limit : " + limit);
                 GetChatMessagesResponse response = chatManager.getChatMessages(userId, eventId, timestamp, limit);

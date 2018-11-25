@@ -2,6 +2,8 @@ package rest.response;
 
 public class GetMinUserDetailsResponse {
 
+    protected String token;
+
     protected Long id;
 
     protected String name;
@@ -40,6 +42,14 @@ public class GetMinUserDetailsResponse {
 
     public void setContact(String contact) {
         this.contact = contact;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     @Override

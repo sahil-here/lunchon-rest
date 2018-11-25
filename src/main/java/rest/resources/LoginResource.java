@@ -1,5 +1,6 @@
 package rest.resources;
 
+import authentication.BasicAuth;
 import com.codahale.metrics.annotation.Timed;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -30,6 +31,9 @@ public class LoginResource {
     @Inject
     protected ILoginManager loginManager;
 
+    @Inject
+    protected BasicAuth basicauth;
+
     @POST
     @Timed
     @Path("/user/signup")
@@ -55,6 +59,7 @@ public class LoginResource {
         BeanValidator.validate(userLoginRequest);
         logger.info("User Login Request: " + userLoginRequest);
         GetUserDetailsResponse response = loginManager.userLogin(userLoginRequest);
+        response.setToken(basicauth.getToken(response.getId()));
         return Response.ok().entity(response).build();
     }
 
