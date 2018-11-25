@@ -86,6 +86,7 @@ public class LunchOnApplication extends Application<LunchOnConfiguration> {
         environment.jersey().register(guiceBundle.getInjector().getInstance(LoginResource.class));
         environment.jersey().register(guiceBundle.getInjector().getInstance(UserResource.class));
         environment.jersey().register(guiceBundle.getInjector().getInstance(EventResource.class));
+        environment.jersey().register(guiceBundle.getInjector().getInstance(ChatMessagingResource.class));
         environment.jersey().register(guiceBundle.getInjector().getInstance(LOExceptionMapper.class));
 
         // Enable CORS headers
@@ -99,6 +100,5 @@ public class LunchOnApplication extends Application<LunchOnConfiguration> {
 
         // Add URL mapping
         cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
-        environment.jersey().register(guiceBundle.getInjector().getInstance(ChatMessagingResource.class));
     }
 }
