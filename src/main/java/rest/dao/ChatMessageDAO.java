@@ -6,11 +6,12 @@ import exception.LOException;
 import io.dropwizard.hibernate.AbstractDAO;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import rest.dao.entity.ChatMessage;
-import rest.dao.entity.Event;
 import rest.request.ChatMessageFetchRequest;
+import rest.resources.ChatMessagingResource;
 
-import javax.ws.rs.QueryParam;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,12 +31,7 @@ public class ChatMessageDAO extends AbstractDAO<ChatMessage> implements IChatMes
             Query query = namedQuery("idempotencyCheckForMessage");
             query.setParameter("event_id", chatMessageFetchRequest.getEventId());
             query.setParameter("timestamp", chatMessageFetchRequest.getTimestamp());
-            query.setParameter("limit", chatMessageFetchRequest.getLimit());
-            Iterator it = query.iterate();
-            while (it.hasNext()){
-                messages.add((ChatMessage) it.next());
-            }
-            return messages;
+            return (List<ChatMessage>) query.list();
         }catch (Exception ex){
             throw new LOException(500, LOErrorCode.INTERNAL_SERVER_ERROR.getName(),ex);
         }
@@ -48,12 +44,8 @@ public class ChatMessageDAO extends AbstractDAO<ChatMessage> implements IChatMes
             Query query = namedQuery("findMessageByEventId");
             query.setParameter("event_id", eventId);
             query.setParameter("timestamp", timestamp);
-            query.setParameter("limit", limit);
-            Iterator it = query.iterate();
-            while (it.hasNext()){
-                messages.add((ChatMessage) it.next());
-            }
-            return messages;
+            query.setMaxResults(limit);
+            return (List<ChatMessage>) query.list();
         }catch (Exception ex){
             throw new LOException(500, LOErrorCode.INTERNAL_SERVER_ERROR.getName(),ex);
         }

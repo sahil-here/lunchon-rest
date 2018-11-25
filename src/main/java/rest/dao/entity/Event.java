@@ -53,11 +53,6 @@ public class Event implements Serializable {
     @OneToMany( mappedBy="event",cascade = CascadeType.ALL)
     @JsonManagedReference
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Message> messages;
-
-    @OneToMany( mappedBy="event",cascade = CascadeType.ALL)
-    @JsonManagedReference
-    @LazyCollection(LazyCollectionOption.FALSE)
     private List<TimePoll> timePolls;
 
     @OneToMany( mappedBy="event",cascade = CascadeType.ALL)
@@ -165,14 +160,6 @@ public class Event implements Serializable {
 
     public void setLocation(Location location) {
         this.location = location;
-    }
-
-    public List<Message> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
     }
 
     public List<TimePoll> getTimePolls() {
