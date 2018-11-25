@@ -43,13 +43,19 @@ public class BasicAuth {
         }
     }
 
-    public String getToken(Long userId) throws LOException{
-        return this.encrypt(Long.toString(userId));
+    public String generateToken(Long userId) throws LOException{
+        return userId+":"+this.encrypt(Long.toString(userId));
     }
 
+    public Long getUserId(String token){
+        String[] list = token.split(":");
+        Long userId = Long.parseLong(list[0]);
+        return userId;
+    }
 
-    public Boolean validateToken(String token, Long userId) throws LOException{
-        if(token.equals(this.getToken(userId))){
+    public Boolean validateToken(String token) throws LOException{
+        Long userId = getUserId(token);
+        if(token.equals(this.generateToken(userId))){
             return true;
         }else{
             throw new LOException(400, LOErrorCode.INVALID_TOKEN.getName());

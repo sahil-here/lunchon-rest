@@ -16,7 +16,6 @@ import rest.response.GetUserDetailsResponse;
 import util.BeanValidator;
 
 import javax.inject.Inject;
-import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -59,7 +58,7 @@ public class LoginResource {
         BeanValidator.validate(userLoginRequest);
         logger.info("User Login Request: " + userLoginRequest);
         GetUserDetailsResponse response = loginManager.userLogin(userLoginRequest);
-        response.setToken(basicauth.getToken(response.getId()));
+        response.setToken(basicauth.generateToken(response.getId()));
         return Response.ok().entity(response).build();
     }
 

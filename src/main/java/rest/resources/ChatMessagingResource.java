@@ -43,7 +43,7 @@ public class ChatMessagingResource {
             @ApiParam(required = true) @NotNull @QueryParam("user_id") Long userId,
             @QueryParam("last_seen") @DefaultValue("253399043869000") Long lastSeen,
             @QueryParam("limit") @DefaultValue("100") int limit) throws LOException {
-                basicauth.validateToken(token, userId);
+                basicauth.validateToken(token);
                 Timestamp timestamp = new Timestamp(lastSeen);  // milli-second epoch
                 logger.info("Fetch messages eventId : " + eventId + ", timeStamp : " + timestamp.toString() + ", limit : " + limit);
                 GetChatMessagesResponse response = chatManager.getChatMessages(userId, eventId, timestamp, limit);
