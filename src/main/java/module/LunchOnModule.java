@@ -27,6 +27,7 @@ public class LunchOnModule extends AbstractModule {
     protected void configure() {
         bind(ObjectMapper.class).toInstance(objectMapper);
         bind(RotationHelper.class).toInstance(new RotationHelper());
+        bind(IChatMessageDAO.class).to(ChatMessageDAO.class);
         bind(ICuisineDAO.class).to(CuisineDAO.class);
         bind(IEventDAO.class).to(EventDAO.class);
         bind(IEventStatusDAO.class).to(EventStatusDAO.class);
@@ -34,6 +35,7 @@ public class LunchOnModule extends AbstractModule {
         bind(IRestaurantDAO.class).to(RestaurantDAO.class);
         bind(ITimeDAO.class).to(TimeDAO.class);
         bind(IUserDAO.class).to(UserDAO.class);
+        bind(IChatManager.class).to(ChatManager.class);
         bind(IEventManager.class).to(EventManager.class);
         bind(ILoginManager.class).to(LoginManager.class);
         bind(IUserManager.class).to(UserManager.class);

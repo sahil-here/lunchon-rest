@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rest.dao.entity.*;
 import exception.LOExceptionMapper;
+import rest.resources.ChatMessagingResource;
 import rest.resources.EventResource;
 import rest.resources.LoginResource;
 import rest.resources.UserResource;
@@ -31,7 +32,7 @@ public class LunchOnApplication extends Application<LunchOnConfiguration> {
     protected static final Logger logger = LoggerFactory.getLogger(LunchOnApplication.class);
 
     private final HibernateBundle<LunchOnConfiguration> hibernateBundle = new HibernateBundle<LunchOnConfiguration>(
-            User.class, Event.class, Cuisine.class, CuisinePoll.class, EventStatus.class,Location.class,Message.class,
+            User.class, Event.class, Cuisine.class, CuisinePoll.class, EventStatus.class,Location.class,ChatMessage.class,
             Restaurant.class, RestaurantPoll.class, Time.class, TimePoll.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(LunchOnConfiguration configuration) {
@@ -98,5 +99,6 @@ public class LunchOnApplication extends Application<LunchOnConfiguration> {
 
         // Add URL mapping
         cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
+        environment.jersey().register(guiceBundle.getInjector().getInstance(ChatMessagingResource.class));
     }
 }

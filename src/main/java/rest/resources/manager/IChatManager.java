@@ -7,6 +7,6 @@ import java.sql.Timestamp;
 
 public interface IChatManager {
 
-    GetChatMessagesResponse getChatMessages(Long eventId, Timestamp timestamp, int limit) throws LOException;
+    GetChatMessagesResponse getChatMessages(Long userId, Long eventId, Timestamp timestamp, int limit) throws LOException;
 
 }

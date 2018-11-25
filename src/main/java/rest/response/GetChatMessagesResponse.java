@@ -1,6 +1,10 @@
 package rest.response;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import rest.dao.entity.ChatMessage;
+import rest.resources.ChatMessagingResource;
+
 import java.util.List;
 
 public class GetChatMessagesResponse {
@@ -33,9 +37,10 @@ public class GetChatMessagesResponse {
         if (this.getNumMessages() > 0)  // delete the last ","
             messages = messages.substring(0, messages.length()-1);
 
-        return  "GetChatMessagesResponse{" +
-                "numMessages : " + Integer.toString(this.getNumMessages()) + "," +
-                "messages : [" + messages + "]}";
+        String str = "{" +
+                "\"numMessages\": " + Integer.toString(this.getNumMessages()) + ", " +
+                "\"messages\": [" + messages + "]}";
+        return str;
     }
 
 

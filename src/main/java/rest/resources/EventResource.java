@@ -87,7 +87,7 @@ public class EventResource {
         return Response.ok().entity(response).build();
     }
 
-    @POST
+  /*  @POST
     @Timed
     @Path("/event/vote")
     @UnitOfWork
@@ -99,7 +99,7 @@ public class EventResource {
         logger.info("Vote Request: " + voteRequest);
         CreateUpdateEventResponse response = eventManager.createOrUpdateEvent(createUpdateEventRequest,eventId);
         return Response.ok().entity(response).build();
-    }
+    }*/
 
 
 }

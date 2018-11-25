@@ -5,15 +5,16 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 public class ChatMessageFetchRequest {
 
     @NotEmpty(message = "missing eventId")
-    @QueryParam("eventId")
+    @QueryParam("event_id")
     private Long eventId;
 
-    @QueryParam("timeStamp")
-    @DefaultValue("12/30/9999 23:59:59")
+    @QueryParam("last_seen")
+   // @DefaultValue("12/30/9999 23:59:59")
     private Timestamp timestamp;
 
     @QueryParam("limit")
@@ -42,5 +43,13 @@ public class ChatMessageFetchRequest {
 
     public void setLimit(int limit) {
         this.limit = limit;
+    }
+
+    @Override
+    public String toString(){
+        return  "ChatMessageFetchRequest{" +
+                "eventId='" + this.eventId.toString() + "'," +
+                "timeStamp='" + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(this.timestamp)) + "'," +
+                "limit='" + Integer.toString(this.limit) + "'}";
     }
 }

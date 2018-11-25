@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "Restaurant", indexes = { @Index(columnList = "id", name = "id_index_on_restaurant")})
+@Table(name = "Restaurant")
 
 @org.hibernate.annotations.NamedQueries({
         @org.hibernate.annotations.NamedQuery(name = "idempotencyCheckForRestaurant", query = "FROM Restaurant WHERE id = :id"),
