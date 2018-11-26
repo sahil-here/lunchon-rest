@@ -14,15 +14,22 @@ public class BasicAuth {
         }
     }
 
-    public static Long getUserId(String token){
+    public static Long getUserId(String token) throws LOException{
         String[] list = token.split(";");
-        Long userId = Long.parseLong(list[0]);
-        return userId;
+        try{
+            return Long.parseLong(list[0]);
+        }catch(Exception ex){
+            throw new LOException(400,LOErrorCode.INVALID_TOKEN.getName());
+        }
     }
 
-    public static String getHash(String token){
+    public static String getHash(String token) throws LOException{
         String[] list = token.split(";");
-        return list[1];
+        if(list.length<2){
+            throw new LOException(400,LOErrorCode.INVALID_TOKEN.getName());
+        }else{
+            return list[1];
+        }
     }
 
     public static boolean validateToken(String token) throws LOException{

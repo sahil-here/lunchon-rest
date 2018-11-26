@@ -19,6 +19,9 @@ public class Cuisine implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "alias")
+    private String alias;
+
     public Long getId() {
         return id;
     }
@@ -33,5 +36,13 @@ public class Cuisine implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 }

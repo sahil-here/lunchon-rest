@@ -20,10 +20,10 @@ public class Location implements Serializable {
     private Long id;
 
     @Column(name = "latitude")
-    private Float latitude;
+    private Double latitude;
 
     @Column(name = "longitude")
-    private Float longitude;
+    private Double longitude;
 
     @Column(name = "radius")
     private Float radius;
@@ -54,19 +54,19 @@ public class Location implements Serializable {
         this.id = id;
     }
 
-    public Float getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Float latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public Float getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Float longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 

@@ -98,7 +98,7 @@ public class EventResource {
 
     @GET
     @Timed
-    @Path("/getAllCuisines")
+    @Path("/cuisines/all")
     @UnitOfWork
     @ApiOperation(value = "Get All Cuisines ", response = Cuisine.class, responseContainer="List")
     public Response getUserDetails(@ApiParam(required = true) @NotNull @HeaderParam("Auth") String token) throws LOException{

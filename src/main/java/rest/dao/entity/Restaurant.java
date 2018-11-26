@@ -34,10 +34,10 @@ public class Restaurant implements Serializable {
     private String phone;
 
     @Column(name = "latitude")
-    private Float latitude;
+    private Double latitude;
 
     @Column(name = "longitude")
-    private Float longitude;
+    private Double longitude;
 
     @Column(name = "image_url")
     private String imageUrl;
@@ -119,19 +119,19 @@ public class Restaurant implements Serializable {
         this.phone = phone;
     }
 
-    public Float getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Float latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public Float getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Float longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
