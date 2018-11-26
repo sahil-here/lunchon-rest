@@ -39,11 +39,11 @@ public class ChatMessage  implements Serializable{
 
     @Override
     public String toString(){
-        return  "{\"author_name\": " + this.author_name +
-                ", \"timestamp\":" + Long.toString(this.timestamp.getTime()) +
-                ", \"event_id\":" + Long.toString(this.event_id) +
-                ", \"content_type\":" + Integer.toString(this.content_type) +
-                ", \"content:\"\"" + this.content + "\"}";
+        return  "{\"author_name\":\"" + author_name + "\"" +
+                ", \"utc_time\":" + Long.toString(timestamp.getTime()) +
+                ", \"event_id\":" + Long.toString(event_id) +
+                ", \"content_type\":" + Integer.toString(content_type) +
+                ", \"content\":\"" + content + "\"}";
     }
 
     public Long getId() {
