@@ -25,6 +25,9 @@ public class ChatManager implements IChatManager {
     public GetChatMessagesResponse getChatMessages(Long userId, Long eventId, Timestamp timestamp, int limit) throws LOException {
 
         Event event = eventDAO.findEventById(eventId);
+        if(event==null){
+            throw new LOException(400,"Invalid event");
+        }
         List<User> participants = event.getParticipants();
         Boolean found = Boolean.FALSE;
         for(User temp: participants)
