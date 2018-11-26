@@ -8,10 +8,9 @@ public enum LOErrorCode {
     USER_NOT_FOUND("User not found"),
     USER_ALREADY_PRESENT("This user is already present"),
     EVENT_NOT_FOUND("Event not found"),
-    MISSING_FILE_FOR_KEY_ENCRYPTION("File key.sym is missing"),
-    ENCRYPTION_ERROR("Error occured during token encryption"),
+    ENCRYPTION_ERROR("Error occured during token generation"),
     INVALID_TOKEN("Invalid token"),
-    EVENT_ALREADY_PRESENT("This event is already present"),
+    TOKEN_MISMATCH("Auth token does not match the userId"),
     DUPLICATE_REQUEST("Duplicate Request");
 
     private final String name;

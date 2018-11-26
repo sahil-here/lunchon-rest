@@ -9,7 +9,6 @@ import javax.validation.constraints.NotNull;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VoteRequest {
 
-    @NotNull(message = "field is missing")
     @JsonProperty("voter_id")
     private Long userId;
 

@@ -12,6 +12,15 @@ public class Coordinates {
     @JsonProperty("longitude")
     private Float longitude;
 
+    public Coordinates(){
+
+    }
+
+    public Coordinates(Float latitude, Float longitude){
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
     public Float getLatitude() {
         return latitude;
     }

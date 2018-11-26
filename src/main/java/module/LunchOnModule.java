@@ -35,6 +35,9 @@ public class LunchOnModule extends AbstractModule {
         bind(IRestaurantDAO.class).to(RestaurantDAO.class);
         bind(ITimeDAO.class).to(TimeDAO.class);
         bind(IUserDAO.class).to(UserDAO.class);
+        bind(ICuisinePollDAO.class).to(CuisinePollDAO.class);
+        bind(IRestaurantPollDAO.class).to(RestaurantPollDAO.class);
+        bind(ITimePollDAO.class).to(TimePollDAO.class);
         bind(IChatManager.class).to(ChatManager.class);
         bind(IEventManager.class).to(EventManager.class);
         bind(ILoginManager.class).to(LoginManager.class);

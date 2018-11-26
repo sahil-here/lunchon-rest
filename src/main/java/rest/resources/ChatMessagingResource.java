@@ -20,7 +20,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.Timestamp;
 
-@Path("lo")
+@Path("api/lunchon")
 @Api(value = "chat")
 @Produces(MediaType.APPLICATION_JSON)
 public class ChatMessagingResource {
@@ -28,9 +28,6 @@ public class ChatMessagingResource {
 
     @Inject
     protected IChatManager chatManager;
-
-    @Inject
-    protected BasicAuth basicauth;
 
     @GET
     @Timed
@@ -40,10 +37,10 @@ public class ChatMessagingResource {
     public Response getChatMessages(
             @ApiParam(required = true) @NotNull @HeaderParam("Auth") String token,
             @ApiParam(required = true) @NotNull @QueryParam("event_id") Long eventId,
-            @ApiParam(required = true) @NotNull @QueryParam("user_id") Long userId,
             @QueryParam("last_seen") @DefaultValue("253399043869000") Long lastSeen,
             @QueryParam("limit") @DefaultValue("100") int limit) throws LOException {
-                basicauth.validateToken(token);
+                BasicAuth.validateToken(token);
+                Long userId = BasicAuth.getUserId(token);
                 Timestamp timestamp = new Timestamp(lastSeen);  // milli-second epoch
                 logger.info("Fetch messages eventId : " + eventId + ", timeStamp : " + timestamp.toString() + ", limit : " + limit);
                 GetChatMessagesResponse response = chatManager.getChatMessages(userId, eventId, timestamp, limit);

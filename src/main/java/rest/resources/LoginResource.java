@@ -30,9 +30,6 @@ public class LoginResource {
     @Inject
     protected ILoginManager loginManager;
 
-    @Inject
-    protected BasicAuth basicauth;
-
     @POST
     @Timed
     @Path("/user/signup")
@@ -58,7 +55,7 @@ public class LoginResource {
         BeanValidator.validate(userLoginRequest);
         logger.info("User Login Request: " + userLoginRequest);
         GetUserDetailsResponse response = loginManager.userLogin(userLoginRequest);
-        response.setToken(basicauth.generateToken(response.getId()));
+        response.setToken(BasicAuth.generateToken(response.getId()));
         return Response.ok().entity(response).build();
     }
 

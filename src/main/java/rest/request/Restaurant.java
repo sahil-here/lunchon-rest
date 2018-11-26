@@ -27,9 +27,6 @@ public class Restaurant {
     @JsonProperty("alias")
     private String alias;
 
-    @JsonProperty("is_closed")
-    private Boolean isClosed;
-
     @JsonProperty("url")
     private String url;
 
@@ -90,14 +87,6 @@ public class Restaurant {
         this.alias = alias;
     }
 
-    public Boolean getClosed() {
-        return isClosed;
-    }
-
-    public void setClosed(Boolean closed) {
-        isClosed = closed;
-    }
-
     public String getUrl() {
         return url;
     }
@@ -139,7 +128,6 @@ public class Restaurant {
                 ", price='" + price + '\'' +
                 ", phone='" + phone + '\'' +
                 ", alias='" + alias + '\'' +
-                ", isClosed=" + isClosed +
                 ", url='" + url + '\'' +
                 ", coordinates=" + coordinates +
                 ", imageUrl='" + imageUrl + '\'' +
