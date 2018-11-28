@@ -20,8 +20,8 @@ public class GetEventDetailsResponse {
     @JsonProperty("budget")
     private String budget;
 
-    @JsonProperty("organiser_id")
-    private Long organiserId;
+    @JsonProperty("organiser")
+    private GetMinUserDetailsResponse organiser;
 
     @JsonProperty("participants")
     private List<Long> participantIds;
@@ -91,12 +91,12 @@ public class GetEventDetailsResponse {
         this.budget = budget;
     }
 
-    public Long getOrganiserId() {
-        return organiserId;
+    public GetMinUserDetailsResponse getOrganiser() {
+        return organiser;
     }
 
-    public void setOrganiserId(Long organiserId) {
-        this.organiserId = organiserId;
+    public void setOrganiser(GetMinUserDetailsResponse organiser) {
+        this.organiser = organiser;
     }
 
     public List<Long> getParticipantIds() {

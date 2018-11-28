@@ -12,6 +12,7 @@ import rest.request.CreateUpdateEventRequest;
 import rest.request.VoteRequest;
 import rest.response.CreateUpdateEventResponse;
 import rest.response.GetEventDetailsResponse;
+import rest.response.GetMinUserDetailsResponse;
 
 import javax.inject.Inject;
 import java.sql.Timestamp;
@@ -198,7 +199,12 @@ public class EventManager implements IEventManager {
         if(event.getFinalTime()!=null){
             response.setFinalTimeId(event.getFinalTime().getId());
         }
-        response.setOrganiserId(event.getOrganiser().getId());
+        GetMinUserDetailsResponse organiser = new GetMinUserDetailsResponse();
+        organiser.setId(event.getOrganiser().getId());
+        organiser.setName(event.getOrganiser().getName());
+        organiser.setContact(event.getOrganiser().getContact());
+        organiser.setEmail(event.getOrganiser().getEmail());
+        response.setOrganiser(organiser);
         rest.request.Location location = new rest.request.Location();
         location.setId(event.getLocation().getId());
         location.setLatitude(event.getLocation().getLatitude());
