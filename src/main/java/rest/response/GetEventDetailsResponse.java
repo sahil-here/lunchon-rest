@@ -24,7 +24,7 @@ public class GetEventDetailsResponse {
     private GetMinUserDetailsResponse organiser;
 
     @JsonProperty("participants")
-    private List<Long> participantIds;
+    private List<GetMinUserDetailsResponse> participantIds;
 
     @JsonProperty("location")
     private Location location;
@@ -99,11 +99,11 @@ public class GetEventDetailsResponse {
         this.organiser = organiser;
     }
 
-    public List<Long> getParticipantIds() {
+    public List<GetMinUserDetailsResponse> getParticipantIds() {
         return participantIds;
     }
 
-    public void setParticipantIds(List<Long> participantIds) {
+    public void setParticipantIds(List<GetMinUserDetailsResponse> participantIds) {
         this.participantIds = participantIds;
     }
 

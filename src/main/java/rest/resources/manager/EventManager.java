@@ -216,9 +216,14 @@ public class EventManager implements IEventManager {
         location.setCountry(event.getLocation().getCountry());
         location.setZipcode(event.getLocation().getZipcode());
         response.setLocation(location);
-        List<Long> participants = new ArrayList<>();
+        List<GetMinUserDetailsResponse> participants = new ArrayList<>();
         for(User participant: event.getParticipants()){
-            participants.add(participant.getId());
+            GetMinUserDetailsResponse newParticipant = new GetMinUserDetailsResponse();
+            newParticipant.setId(participant.getId());
+            newParticipant.setName(participant.getName());
+            newParticipant.setEmail(participant.getEmail());
+            newParticipant.setContact(participant.getContact());
+            participants.add(newParticipant);
         }
         response.setParticipantIds(participants);
 
