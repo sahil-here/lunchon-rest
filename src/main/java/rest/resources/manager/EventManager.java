@@ -222,7 +222,17 @@ public class EventManager implements IEventManager {
         }
         response.setParticipantIds(participants);
 
+        logger.debug("Event with eventId " + event.getId() + " has following cuisine choices.");
+        for(Cuisine cuisine: event.getCuisineChoices()){
+            logger.debug("Event with eventId " + event.getId() + " has " + " cuisine choice "+cuisine.getId());
+        }
+
         response.setCuisineChoices(event.getCuisineChoices());
+
+        /*logger.info("Event with eventId " + event.getId() + " has following cuisine choices set in the response.");
+        for(Cuisine cuisine: response.getCuisineChoices()){
+            logger.info("Event with eventId " + event.getId() + " has " + " cuisine choice "+cuisine.getId());
+        }*/
 
         List<rest.request.CuisinePoll> cuisinePolls = new ArrayList<>();
         for(CuisinePoll cuisinePoll: event.getCuisinePolls()){
