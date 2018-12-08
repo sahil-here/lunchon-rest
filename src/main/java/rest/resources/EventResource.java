@@ -119,6 +119,7 @@ public class EventResource {
             @ApiParam(value = "Update Event Request ", required = true) VoteRequest voteRequest) throws LOException {
         BasicAuth.validateToken(token);
         Long userId = BasicAuth.getUserId(token);
+        voteRequest.setUserId(userId);
         BeanValidator.validate(voteRequest);
         logger.info("Vote Request: " + voteRequest);
         eventManager.vote(voteRequest);
