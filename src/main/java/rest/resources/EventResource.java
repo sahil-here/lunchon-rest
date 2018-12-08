@@ -5,6 +5,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
+import exception.LOErrorMessage;
 import exception.LOException;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.slf4j.Logger;
@@ -123,7 +124,10 @@ public class EventResource {
         BeanValidator.validate(voteRequest);
         logger.info("Vote Request: " + voteRequest);
         eventManager.vote(voteRequest);
-        return Response.ok().entity("OK").build();
+        LOErrorMessage successResponse = new LOErrorMessage();
+        successResponse.setCode("200");
+        successResponse.setMessage("OK");
+        return Response.ok().entity(successResponse).build();
     }
 
 
