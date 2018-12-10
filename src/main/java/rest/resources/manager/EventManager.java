@@ -140,12 +140,27 @@ public class EventManager implements IEventManager {
         event.setRestaurantChoices(restaurantChoices);
 
         //Setting Cuisine choices
-        event.setCuisineChoices(createUpdateEventRequest.getCuisineChoices());
+        List<Cuisine> cuisineChoices = new ArrayList<>();
+        for(Cuisine cuisine: createUpdateEventRequest.getCuisineChoices()){
+            Cuisine cuisine1 = cuisineDAO.findCuisineById(cuisine.getId());
+            if(cuisine1!=null){
+                cuisineChoices.add(cuisine1);
+            }
+        }
+        event.setCuisineChoices(cuisineChoices);
 
         //Setting final chosen options
-        event.setFinalCuisine(cuisineDAO.findCuisineById(createUpdateEventRequest.getFinalCuisineId()));
-        event.setFinalRestaurant(restaurantDAO.findRestautantById(createUpdateEventRequest.getFinalRestaurantId()));
-        event.setFinalTime(timeDAO.findTimeById(createUpdateEventRequest.getFinalTimeId()));
+        if(createUpdateEventRequest.getFinalCuisineId()!=null ){
+            event.setFinalCuisine(cuisineDAO.findCuisineById(createUpdateEventRequest.getFinalCuisineId()));
+        }
+
+        if(createUpdateEventRequest.getFinalRestaurantId()!=null){
+            event.setFinalRestaurant(restaurantDAO.findRestautantById(createUpdateEventRequest.getFinalRestaurantId()));
+        }
+
+        if(createUpdateEventRequest.getFinalTimeId() != null){
+            event.setFinalTime(timeDAO.findTimeById(createUpdateEventRequest.getFinalTimeId()));
+        }
 
         Event createdOrUpdatedEvent = eventDAO.createOrUpdate(event);
 
