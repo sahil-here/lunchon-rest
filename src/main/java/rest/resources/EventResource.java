@@ -8,6 +8,14 @@ import com.wordnik.swagger.annotations.ApiParam;
 import exception.LOErrorMessage;
 import exception.LOException;
 import io.dropwizard.hibernate.UnitOfWork;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rest.dao.entity.Cuisine;
@@ -19,6 +27,10 @@ import rest.resources.manager.IUserManager;
 import rest.response.CreateUpdateEventResponse;
 import rest.response.GetEventDetailsResponse;
 import util.BeanValidator;
+
+import java.io.IOException;
+import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -39,6 +51,9 @@ public class EventResource {
 
     @Inject
     protected IUserManager userManager;
+
+    @Inject
+    protected HttpClient httpClient;
 
     @POST
     @Timed
@@ -128,6 +143,41 @@ public class EventResource {
         successResponse.setCode("200");
         successResponse.setMessage("OK");
         return Response.ok().entity(successResponse).build();
+    }
+
+    @GET
+    @Timed
+    @Path("/event/yelp")
+    @UnitOfWork
+    @ApiOperation(value = "Vote Request", response = String.class)
+    public Response queryYelp(
+            @ApiParam(value = "Yelp query string", required = true)@NotNull @QueryParam("query") String queryUrl) throws LOException {
+
+        URI uri = URI.create(queryUrl);
+        HttpGet httpGet = new HttpGet(uri);
+
+        List<Header> headerList = new ArrayList<>();
+        headerList.add(new BasicHeader("Authorization", "Bearer JLADzFnvJ6DFPZrD4KAR4SES9Xl9z3glmrTLGKrE0rpZzlQ7Q_GYyZcegh4SxASAi8RG710lt584LH-JLxFK14KmO8_DfCjDENU9-vIyELmhgkhmDNPSSRq0Pdn0W3Yx"));
+        headerList.add(new BasicHeader("Content-Type","text/html"));
+        httpGet.setHeaders(headerList.toArray(new Header[headerList.size()]));
+        logger.info("Making " + httpGet.getMethod() + " Call: API=>" + uri);
+        try{
+            HttpResponse httpResponse = httpClient.execute(httpGet);
+            int responseCode = httpResponse.getStatusLine().getStatusCode();
+            logger.info("ResponseCode: " + responseCode);
+            if (responseCode != HttpStatus.SC_OK) {
+                logger.error("Call failed with status code : " + responseCode +
+                        " and status message : " + httpResponse.getStatusLine().getReasonPhrase());
+                logger.info("Response : " + EntityUtils.toString(httpResponse.getEntity()));
+                throw new LOException(responseCode, httpResponse.getStatusLine().getReasonPhrase());
+            }
+            HttpEntity httpEntity = httpResponse.getEntity();
+            String responseBody = EntityUtils.toString(httpEntity);
+            logger.info("ResponseBody: " + responseBody);
+            return Response.ok().entity(responseBody).build();
+        }catch (IOException ex){
+            throw new LOException(500,"IOException while calling Yelp API");
+        }
     }
 
 
